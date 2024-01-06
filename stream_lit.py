@@ -16,8 +16,8 @@ def preprocess_image(image_path):
         # Use PIL to open the image
         img = Image.open(image_path)
         img = img.resize((224, 224))
-        img = np.array(img)  # Convert PIL Image to NumPy array
-        img = img.astype("float") / 255.0
+        img = np.array(img, dtype=np.float32)  # Convert to FLOAT32
+        img = img / 255.0
         img = np.expand_dims(img, axis=0)
         return img
     except Exception as e:
