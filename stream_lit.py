@@ -1,8 +1,8 @@
-
 import streamlit as st
 import cv2
 import numpy as np
 import tensorflow as tf
+from PIL import Image
 
 # Load the TensorFlow Lite model
 interpreter = tf.lite.Interpreter(model_path="all_model.tflite")
@@ -13,12 +13,14 @@ class_labels = ["class1", "class2", "class3"]  # Replace with your actual class 
 
 def preprocess_image(image_path):
     try:
-        img = cv2.imread(image_path)
-        img = cv2.resize(img, (224, 224))
+        # Use PIL to open the image
+        img = Image.open(image_path)
+        img = img.resize((224, 224))
+        img = np.array(img)  # Convert PIL Image to NumPy array
         img = img.astype("float") / 255.0
         img = np.expand_dims(img, axis=0)
         return img
-    except cv2.error as e:
+    except Exception as e:
         st.error(f"Error processing image: {e}")
         return None
 
@@ -46,7 +48,7 @@ def make_prediction(image_path):
 
 st.title("Image Classification App")
 
-uploaded_file = st.file_uploader("Choose an image...", type="jpg")
+uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
 if st.button("Make Prediction"):
     make_prediction(uploaded_file)
