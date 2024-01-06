@@ -1,13 +1,6 @@
-easyocr
-streamlit
-opencv-python-headless==4.5.5.64
-opencv-python-headless==4.5.3
-Pillow
-mmdet
-mmocr
-paddleocr
-paddlepaddle
-mycolorpy
-plotly
-plotly-express
-mmcv-full --no-binary mmcv-ful
+tensorflow
+numpy
+opencv-python-headless
+patchify
+matplotlib
+keras
