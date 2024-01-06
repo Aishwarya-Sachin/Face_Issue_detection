@@ -9,7 +9,7 @@ interpreter = tf.lite.Interpreter(model_path="all_model.tflite")
 interpreter.allocate_tensors()
 
 # Define class labels
-class_labels = ["class1", "class2", "class3"]  # Replace with your actual class labels
+class_labels = ["acne", "acne_scars", "hyperPigmentation", "white_patches"]  # Replace with your actual class labels
 
 def preprocess_image(image_path):
     try:
