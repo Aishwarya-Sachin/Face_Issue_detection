@@ -5,7 +5,7 @@ import numpy as np
 import tensorflow as tf
 
 # Load the TensorFlow Lite model
-interpreter = tf.lite.Interpreter(model_path="/content/drive/MyDrive/all_model.tflite")
+interpreter = tf.lite.Interpreter(model_path="all_model.tflite")
 interpreter.allocate_tensors()
 
 # Define class labels
