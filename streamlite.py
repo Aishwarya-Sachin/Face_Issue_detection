@@ -11,10 +11,17 @@ interpreter.allocate_tensors()
 # Define class labels
 class_labels = ["acne", "acne_scars", "hyperPigmentation", "white_patches"]  # Replace with your actual class labels
 
-def preprocess_image(img):
+def preprocess_image(image_path):
     try:
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Ensure proper color conversion
-        img = cv2.resize(img, (224, 224))
+        # Use PIL to open the image
+        img = Image.open(image_path)
+        img = img.resize((224, 224))
+        img = np.array(img, dtype=np.float32)  # Convert to FLOAT32
+
+        # Print the image information for debugging
+        print(f"Image shape before conversion: {img.shape}")
+
+        img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)  # Convert to BGR format
         img = np.array(img, dtype=np.float32)  # Convert to FLOAT32
         img = img / 255.0
         img = np.expand_dims(img, axis=0)
@@ -22,7 +29,6 @@ def preprocess_image(img):
     except Exception as e:
         st.error(f"Error processing image: {e}")
         return None
-
 
 def make_prediction(img):
     preprocessed_img = preprocess_image(img)
