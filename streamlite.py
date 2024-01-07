@@ -15,14 +15,17 @@ def preprocess_image(image_path):
     try:
         # Use PIL to open the image
         img = cv2.imread(image_path)
-        img = img.resize((224, 224))
+        if img is None:
+            st.error("Failed to read the image.")
+            return None
+
+        img = cv2.resize(img, (224, 224))
         img = np.array(img, dtype=np.float32)  # Convert to FLOAT32
 
         # Print the image information for debugging
         print(f"Image shape before conversion: {img.shape}")
 
-        img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)  # Convert to BGR format
-        img = np.array(img, dtype=np.float32)  # Convert to FLOAT32
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Convert to RGB format
         img = img / 255.0
         img = np.expand_dims(img, axis=0)
         return img
@@ -72,3 +75,4 @@ else:
             make_prediction(img)
         else:
             st.warning("Please upload an image.")
+
