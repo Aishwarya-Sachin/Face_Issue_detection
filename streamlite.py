@@ -14,7 +14,7 @@ class_labels = ["acne", "acne_scars", "hyperPigmentation", "white_patches"]  # R
 def preprocess_image(image_path):
     try:
         # Use PIL to open the image
-        img = Image.open(image_path)
+        img = cv2.imread(image_path)
         img = img.resize((224, 224))
         img = np.array(img, dtype=np.float32)  # Convert to FLOAT32
 
