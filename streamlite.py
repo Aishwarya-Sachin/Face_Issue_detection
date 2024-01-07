@@ -13,6 +13,7 @@ class_labels = ["acne", "acne_scars", "hyperPigmentation", "white_patches"]  # R
 
 def preprocess_image(img):
     try:
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Ensure proper color conversion
         img = cv2.resize(img, (224, 224))
         img = np.array(img, dtype=np.float32)  # Convert to FLOAT32
         img = img / 255.0
@@ -21,6 +22,7 @@ def preprocess_image(img):
     except Exception as e:
         st.error(f"Error processing image: {e}")
         return None
+
 
 def make_prediction(img):
     preprocessed_img = preprocess_image(img)
