@@ -11,10 +11,9 @@ interpreter.allocate_tensors()
 # Define class labels
 class_labels = ["acne", "acne_scars", "hyperPigmentation", "white_patches"]  # Replace with your actual class labels
 
-def preprocess_image(image_data):
+def preprocess_image(img):
     try:
-        # Use PIL to open the image from BytesIO object
-        img = Image.open(image_data).convert("RGB")
+        img = img.convert("RGB")
         img = img.resize((224, 224))
         img_array = np.array(img, dtype=np.uint8)  # Convert to UINT8
         img_array = img_array / 255.0
@@ -24,9 +23,9 @@ def preprocess_image(image_data):
         st.error(f"Error processing image: {e}")
         return None
 
-def make_prediction(image_data):
-    if image_data:
-        preprocessed_img = preprocess_image(image_data)
+def make_prediction(img):
+    if img:
+        preprocessed_img = preprocess_image(img)
         if preprocessed_img is not None:
             # Perform inference with the TensorFlow Lite model
             input_tensor_index = interpreter.get_input_details()[0]['index']
@@ -40,16 +39,15 @@ def make_prediction(image_data):
             confidence = prediction[0][predicted_class_index]
 
             st.success(f"Prediction: {predicted_class} (Confidence: {confidence:.2%})")
-            st.image(image_data, caption="Uploaded Image", use_column_width=True)
+            st.image(img, caption="Captured Image", use_column_width=True)
         else:
             st.error("Failed to process the image.")
     else:
-        st.warning("Please upload an image.")
+        st.warning("Please capture an image using the camera.")
 
-st.title("Image Classification App")
+st.title("Image Classification App with Camera")
 
-uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+captured_image = st.camera_input("Capture an image")
 
 if st.button("Make Prediction"):
-    make_prediction(uploaded_file)
-
+    make_prediction(captured_image)
