@@ -14,11 +14,10 @@ class_labels = ["acne", "acne_scars", "hyperPigmentation", "white_patches"]  # R
 def preprocess_image(image_data):
     try:
         # Use PIL to open the image from BytesIO object
-        img = Image.open(image_data)
-        img = img.convert("RGB")  # Ensure that the image is in RGB format
+        img = Image.open(image_data).convert("RGB")
         img = img.resize((224, 224))
-        img_array = np.array(img, dtype=np.float32)  # Convert to FLOAT32
-        img_array /= 255.0
+        img_array = np.array(img, dtype=np.uint8)  # Convert to UINT8
+        img_array = img_array / 255.0
         img_array = np.expand_dims(img_array, axis=0)
         return img_array
     except Exception as e:
