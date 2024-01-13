@@ -15,11 +15,12 @@ def preprocess_image(image_data):
     try:
         # Use PIL to open the image from BytesIO object
         img = Image.open(image_data)
+        img = img.convert("RGB")  # Ensure that the image is in RGB format
         img = img.resize((224, 224))
-        img = np.array(img, dtype=np.float32)  # Convert to FLOAT32
-        img = img / 255.0
-        img = np.expand_dims(img, axis=0)
-        return img
+        img_array = np.array(img, dtype=np.float32)  # Convert to FLOAT32
+        img_array /= 255.0
+        img_array = np.expand_dims(img_array, axis=0)
+        return img_array
     except Exception as e:
         st.error(f"Error processing image: {e}")
         return None
