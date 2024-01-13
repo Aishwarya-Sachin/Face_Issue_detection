@@ -13,7 +13,8 @@ class_labels = ["acne", "acne_scars", "hyperPigmentation", "white_patches"]  # R
 
 def preprocess_image(img):
     try:
-        img = img.convert("RGB")
+        # Use PIL to open the image from BytesIO object
+        img = Image.open(img).convert("RGB")
         img = img.resize((224, 224))
         img_array = np.array(img, dtype=np.uint8)  # Convert to UINT8
         img_array = img_array / 255.0
