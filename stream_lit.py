@@ -11,10 +11,10 @@ interpreter.allocate_tensors()
 # Define class labels
 class_labels = ["acne", "acne_scars", "hyperPigmentation", "white_patches"]  # Replace with your actual class labels
 
-def preprocess_image(image_path):
+def preprocess_image(image_data):
     try:
-        # Use PIL to open the image
-        img = Image.open(image_path)
+        # Use PIL to open the image from BytesIO object
+        img = Image.open(image_data)
         img = img.resize((224, 224))
         img = np.array(img, dtype=np.float32)  # Convert to FLOAT32
         img = img / 255.0
@@ -24,9 +24,9 @@ def preprocess_image(image_path):
         st.error(f"Error processing image: {e}")
         return None
 
-def make_prediction(image_path):
-    if image_path:
-        preprocessed_img = preprocess_image(image_path)
+def make_prediction(image_data):
+    if image_data:
+        preprocessed_img = preprocess_image(image_data)
         if preprocessed_img is not None:
             # Perform inference with the TensorFlow Lite model
             input_tensor_index = interpreter.get_input_details()[0]['index']
@@ -40,7 +40,7 @@ def make_prediction(image_path):
             confidence = prediction[0][predicted_class_index]
 
             st.success(f"Prediction: {predicted_class} (Confidence: {confidence:.2%})")
-            st.image(image_path, caption="Uploaded Image", use_column_width=True)
+            st.image(image_data, caption="Uploaded Image", use_column_width=True)
         else:
             st.error("Failed to process the image.")
     else:
@@ -52,3 +52,4 @@ uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png
 
 if st.button("Make Prediction"):
     make_prediction(uploaded_file)
+
